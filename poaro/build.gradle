@@ -1,7 +1,61 @@
 plugins {
     id 'java-library'
     id 'org.jetbrains.kotlin.jvm'
-    id 'com.vanniktech.maven.publish'
+    id 'maven-publish'
+    id 'signing'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'io.github.snapp-incubator'
+            artifactId = 'blackBox'
+            version = '1.0.0'
+
+            afterEvaluate{
+                from components.java
+            }
+            pom {
+                name = 'blackBox'
+                description = 'Poaro is specifically designed as a logging solution for Android applications that provides flexible and efficient logging capabilities'
+                url = 'https://github.com/snapp-incubator/BlackBox/'
+                inceptionYear = '2023'
+
+                licenses {
+                    license {
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'snapp'
+                        name = 'Snapp'
+                        email = 'android.international@snapp.cab'
+                    }
+                }
+                scm {
+                    url='https://github.com/snapp-incubator/BlackBox/'
+                    connection='https://github.com/snapp-incubator/BlackBox.git'
+                    developerConnection='https://github.com/snapp-incubator/BlackBox.git'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "ossrh"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+
+            credentials {
+                username = project.mavenCentralUsername
+                password = project.mavenCentralPassword
+            }
+        }
+    }
+}
+signing {
+    sign publishing.publications.mavenJava
 }
 
 java {
